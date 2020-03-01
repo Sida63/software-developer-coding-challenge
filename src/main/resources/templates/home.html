@@ -1,0 +1,78 @@
+<html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <title>Home Page</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
+</head>
+<style>
+    .info {
+    height: 150px;
+    width: 200px;
+    border: 3px solid #e4e7eb;
+    background-color: #e4e7eb;
+    text-align: center;
+    float: left;
+    margin: 1%;
+
+}
+.info:hover{
+ box-shadow: 0px 0px 5px #000;
+}
+.title {
+
+
+}
+.pts {
+
+text-align: center;
+
+}
+
+.pts div {
+
+color: #00a1d6;
+font-weight: 700;
+font-size: 16px;
+margin-bottom: 12px;
+margin-top: 15%;
+
+}
+</style>
+<body>
+<h1>Hello !</h1>
+
+<div>
+    <p style="float: left;">Welcome to Our App</span></p>
+    <a class="btn" style="margin-left: 80%; background: #00a1d6" href="/newcarpage">Input New Car</a>
+</div>
+<div id="bid_infor" style="height: 600px;margin-top: 20px;">
+<div id="info1" class="info" th:each="car : ${carlist}">
+    <a class="title" th:text="${'Car Name: ' + car.carname}" th:href="@{/cardetail/{id}(id=${car.id})}">Car Name</a>
+    <div id="point1" class="pts">
+        <div th:text="${'End Time: ' + car.endtime}">2020:20:00</div>
+        <label th:text="${'Lowest Price: ' + car.lowestprice + ' $'}">Highest: 10000</label>
+    </div>
+</div>
+
+</div>
+<div class="card-footer text-muted bg-transparent" style="border-top:none;">
+        <span th:if="${carlist.hasPrevious()}">
+        <a class="btn btn-outline-success" style="color: #28a745;" th:href="@{/(page=${carlist.number-1},size=${carlist.size})}">Previous</a>
+        </span>
+        <th:block th:each="i: ${#numbers.sequence(0, carlist.totalPages - 1)}" th:if="${carlist.totalPages != 0}">
+            <span th:if="${carlist.number == i}" class="selected">[[${i}+1]]</span>
+            <span th:unless="${carlist.number == i}">
+             <a class="btn btn-outline-success" style="color: #28a745;" th:href="@{/(page=${i},size=${carlist.size})}">[[${i}+1]]</a>
+            </span>
+        </th:block>
+    <span th:if="${carlist.hasNext()}">
+        <a class="btn btn-outline-success" style="color: #28a745;" th:href="@{/(page=${carlist.number+1},size=${carlist.size})}">Next</a>
+    </span>
+</div>
+</body>
+</html>

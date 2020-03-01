@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Input Car</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
+</head>
+<body>
+<form id="newcarrecord" th:action="@{/newcarpage}" th:object="${newcar}" class="form" role="form"
+      method="post">
+
+    <div class="form-group">
+        <label>Car Name</label>
+        <input class="form-control form-control-lg rounded-0" id="carname" required="true" type="text" th:field="*{carname}"/>
+    </div>
+
+    <div>
+        <label>Car Infor</label>
+        <input class="form-control form-control-lg rounded-0" id="carinfor" type="text" th:field="*{carinfor}"/>
+    </div>
+    <div>
+        <label>Publisher</label>
+        <input class="form-control form-control-lg rounded-0" id="publisher" required="true" type="text" th:field="*{publisher}"/>
+    </div>
+    <div>
+        <label>Lowest Price</label>
+        <input class="form-control form-control-lg rounded-0" id="lowestprice" required="true" type="number" th:field="*{lowestprice}"/>
+    </div>
+    <div align= "center">
+        <button  class="btn btn-success btn-lg float-lg-none align-content-lg-center" type="submit">submit</button>
+    </div>
+</form>
+</body>
+</html>
