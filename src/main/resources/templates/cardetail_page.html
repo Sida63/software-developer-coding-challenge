@@ -11,7 +11,7 @@
 </head>
 <body>
 <h1>Hello !</h1>
-<div>
+<div style="height: 250px;">
 <div style="margin-left: 20%;float:left;width:35%;">
     <table style="width: 100%;">
         <tr>
@@ -41,7 +41,7 @@
 
     </table>
 </div>
-<div style="float:left; width: 45%;">
+<div style="float:left; width: 45%;" id="historybox">
     <label>History</label>
     <table style="width: 70%;background-color: whitesmoke;">
         <tr style="background-color: gray;">
@@ -49,39 +49,25 @@
             <td><b>Price</b></td>
             <td><b>Time</b></td>
         </tr>
-        <tr>
-            <td><b>testusers</b></td>
-            <td><b>200</b></td>
-            <td><b>2020:20:20</b></td>
-        </tr>
-        <tr>
-            <td><b>testuser1</b></td>
-            <td><b>300</b></td>
-            <td><b>2020:20:20</b></td>
-        </tr>
-        <tr>
-            <td><b>testuser1</b></td>
-            <td><b>300</b></td>
-            <td><b>2020:20:20</b></td>
-        </tr>
-        <tr>
-            <td><b>testuser1</b></td>
-            <td><b>300</b></td>
-            <td><b>2020:20:20</b></td>
-        </tr>
-        <tr>
-            <td><b>testuser1</b></td>
-            <td><b>300</b></td>
-            <td><b>2020:20:20</b></td>
+
+        <tr th:each="record : ${bidhistory}">
+            <td><b th:text="${record.buyer}">testusers</b></td>
+            <td><b th:text="${record.price}">200</b></td>
+            <td><b th:text="${record.createtime}">2020:20:20</b></td>
         </tr>
     </table>
     <div class="card-footer text-muted bg-transparent" style="border-top:none;">
-        <span>
-        <a class="btn btn-outline-success" style="color: #28a745;">Previous</a>
+        <span th:if="${bidhistory.hasPrevious()}">
+        <a class="btn btn-outline-success" style="color: #28a745;" th:href="@{'/gethistory/'+${car.id}(page=${bidhistory.number-1},size=${bidhistory.size})}">Previous</a>
         </span>
-        <span class="selected">1</span>
-        <span>
-        <a class="btn btn-outline-success" style="color: #28a745;" >Next</a>
+        <th:block th:each="i: ${#numbers.sequence(0, bidhistory.totalPages - 1)}" th:if="${bidhistory.totalPages != 0}">
+            <span th:if="${bidhistory.number == i}" class="selected">[[${i}+1]]</span>
+            <span th:unless="${bidhistory.number == i}">
+             <a class="btn btn-outline-success" style="color: #28a745;" th:href="@{'/gethistory/'+${car.id}(page=${i},size=${bidhistory.size})}">[[${i}+1]]</a>
+            </span>
+        </th:block>
+        <span th:if="${bidhistory.hasNext()}">
+        <a class="btn btn-outline-success" style="color: #28a745;" th:href="@{'/gethistory/'+${car.id}(page=${bidhistory.number+1},size=${bidhistory.size})}">Next</a>
     </span>
     </div>
 </div>

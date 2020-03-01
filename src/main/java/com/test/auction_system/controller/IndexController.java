@@ -50,13 +50,36 @@ public class IndexController {
     public String getcardeail(@PathVariable Long id,Model model){
         BidCommand bidcommand = new BidCommand();
         Car car=carRepository.findById(id).get();
-        Pageable topOne = PageRequest.of(0, 1, Sort.Direction.DESC, "price");
+        Sort sort = Sort.by(
+                Sort.Order.desc("price"),
+                Sort.Order.asc("createtime"));
+        Pageable topOne = PageRequest.of(0, 1, sort);
         List<Bid> winnerbid=bidRepository.findwinner(id,topOne);
         model.addAttribute("car",car);
         model.addAttribute("newbid", bidcommand);
+        Pageable history = PageRequest.of(0, 5, Sort.Direction.DESC, "createtime");
+        model.addAttribute("bidhistory",bidRepository.findAll(history));
         System.out.println("Size: "+winnerbid.size());
         if(winnerbid.size()!=0)
         model.addAttribute("winnerbid",winnerbid.get(0));
+        return "cardetail_page";
+    }
+    @GetMapping("/gethistory/{id}")
+    public String gethistory(@PathVariable Long id,Model model,@PageableDefault(size = 5,sort = {"createtime"}, direction = Sort.Direction.DESC) Pageable pageable)
+    {
+        BidCommand bidcommand = new BidCommand();
+        Car car=carRepository.findById(id).get();
+        Sort sort = Sort.by(
+                Sort.Order.desc("price"),
+                Sort.Order.asc("createtime"));
+        Pageable topOne = PageRequest.of(0, 1, sort);
+        List<Bid> winnerbid=bidRepository.findwinner(id,topOne);
+        model.addAttribute("car",car);
+        model.addAttribute("newbid", bidcommand);
+        model.addAttribute("bidhistory",bidRepository.findAll(pageable));
+        System.out.println("Size: "+winnerbid.size());
+        if(winnerbid.size()!=0)
+            model.addAttribute("winnerbid",winnerbid.get(0));
         return "cardetail_page";
     }
     @PostMapping("/cardetail/{id}")
