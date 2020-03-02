@@ -40,6 +40,7 @@ This is a coding challenge for software developer applicants applying through ht
  - the project is running on http://localhost:8080/
 
  # To run my code from complied fat jar file:
+ - find complied jar file at following path: software-developer-coding-challenge\target
  - please use below command to start service:
     java -jar auction_system-0.0.1-SNAPSHOT.jar
 
