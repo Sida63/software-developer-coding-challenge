@@ -85,12 +85,12 @@
 
         <div class="form-group">
             <label>User Name</label>
-            <input class="form-control form-control-lg rounded-0" id="username" required="true" type="text" th:field="*{username}"/>
+            <input class="form-control form-control-lg rounded-0" id="username" required="true" type="text" maxlength="100" th:field="*{username}"/>
         </div>
 
         <div>
             <label>Price</label>
-            <input class="form-control form-control-lg rounded-0" id="price" type="number" min="0" step="0.01" th:field="*{price}"/>
+            <input class="form-control form-control-lg rounded-0" id="price" type="number" min="0" step="0.01" max="99999" th:field="*{price}"/>
         </div>
         <div align= "center">
             <button  class="btn btn-success btn-lg float-lg-none align-content-lg-center" onclick="return myFunction()">submit</button>
