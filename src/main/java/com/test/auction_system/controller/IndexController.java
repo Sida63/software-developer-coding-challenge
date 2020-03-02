@@ -50,11 +50,11 @@ public class IndexController {
     public String getcardeail(@PathVariable Long id,Model model){
         BidCommand bidcommand = new BidCommand();
         Car car=carRepository.findById(id).get();
-        Sort sort = Sort.by(
+        Sort sort = Sort.by( //construct one sort object, select the highest price record of bid. If there are multi same price, chose the record whose createtime is smaller
                 Sort.Order.desc("price"),
                 Sort.Order.asc("createtime"));
         Pageable topOne = PageRequest.of(0, 1, sort);
-        List<Bid> winnerbid=bidRepository.findwinner(id,topOne);
+        List<Bid> winnerbid=bidRepository.findwinner(id,topOne); //find who is the current bid winner
         model.addAttribute("car",car);
         model.addAttribute("newbid", bidcommand);
         Pageable history = PageRequest.of(0, 5, Sort.Direction.DESC, "createtime");
@@ -64,7 +64,7 @@ public class IndexController {
         model.addAttribute("winnerbid",winnerbid.get(0));
         return "cardetail_page";
     }
-    @GetMapping("/gethistory/{id}")
+    @GetMapping("/gethistory/{id}") //get bid history for one car
     public String gethistory(@PathVariable Long id,Model model,@PageableDefault(size = 5,sort = {"createtime"}, direction = Sort.Direction.DESC) Pageable pageable)
     {
         BidCommand bidcommand = new BidCommand();
@@ -82,7 +82,7 @@ public class IndexController {
             model.addAttribute("winnerbid",winnerbid.get(0));
         return "cardetail_page";
     }
-    @PostMapping("/cardetail/{id}")
+    @PostMapping("/cardetail/{id}") //accept bid information for one car
     public String submitbid(
             @ModelAttribute("newbidrecord") @Valid BidCommand bidcommand,
             @PathVariable Long id,
@@ -95,7 +95,7 @@ public class IndexController {
         long t= startcal.getTimeInMillis();
         Car car=carRepository.findById(id).get();
         Date starttime=new Date(t);
-        if(starttime.compareTo(car.getEndtime())<0) {
+        if(starttime.compareTo(car.getEndtime())<0) { //check if auction is over
             Bid bid = new Bid();
             bid.setBuyer(bidcommand.getUsername());
             bid.setCarid(id);
@@ -140,7 +140,7 @@ public class IndexController {
         Calendar startcal = Calendar.getInstance();
         long t= startcal.getTimeInMillis();
         Date starttime=new Date(t);
-        Date afterAddingTenMins=new Date(t + (10 * 60000));
+        Date afterAddingTenMins=new Date(t + (10 * 60000)); //every auction will last for 10 mins
         newcar.setStarttime(starttime);
         newcar.setEndtime(afterAddingTenMins);
         carRepository.save(newcar);
