@@ -44,6 +44,11 @@ This is a coding challenge for software developer applicants applying through ht
  - please use below command to start service:
     java -jar auction_system-0.0.1-SNAPSHOT.jar
 
+ # How this auction system works?
+ - User can check all the car information at mainpage
+ - Click the button "Input Car" in Mainpage will lead user to another page "Input Car", here user could add one car for auction
+ - Click "car name" link will lead user to another page "Car Detail". Here user can see detailed information and find all the related bid history for the car. Also user could make one bid for the car at this page.
+
  ## Tech stacks:
  - Spring Boot 2.0
  - Maven
