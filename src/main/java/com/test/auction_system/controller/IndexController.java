@@ -93,14 +93,35 @@ public class IndexController {
 
         Calendar startcal = Calendar.getInstance();
         long t= startcal.getTimeInMillis();
+        Car car=carRepository.findById(id).get();
         Date starttime=new Date(t);
-        Bid bid=new Bid();
-        bid.setBuyer(bidcommand.getUsername());
-        bid.setCarid(id);
-        bid.setCreatetime(starttime);
-        bid.setPrice(bidcommand.getPrice());
-        bidRepository.save(bid);
-        return "redirect:/cardetail/"+id.toString();
+        if(starttime.compareTo(car.getEndtime())<0) {
+            Bid bid = new Bid();
+            bid.setBuyer(bidcommand.getUsername());
+            bid.setCarid(id);
+            bid.setCreatetime(starttime);
+            bid.setPrice(bidcommand.getPrice());
+            bidRepository.save(bid);
+        }
+        else
+        {
+            model.addAttribute("error","This auction is end now, your bid is not valid");
+        }
+        BidCommand newbidcommand = new BidCommand();
+        Sort sort = Sort.by(
+                Sort.Order.desc("price"),
+                Sort.Order.asc("createtime"));
+        Pageable topOne = PageRequest.of(0, 1, sort);
+        List<Bid> winnerbid=bidRepository.findwinner(id,topOne);
+        model.addAttribute("car",car);
+        model.addAttribute("newbid", newbidcommand);
+        Pageable history = PageRequest.of(0, 5, Sort.Direction.DESC, "createtime");
+        model.addAttribute("bidhistory",bidRepository.findAll(history));
+        System.out.println("Size: "+winnerbid.size());
+        if(winnerbid.size()!=0)
+            model.addAttribute("winnerbid",winnerbid.get(0));
+
+        return "cardetail_page";
     }
 
     @PostMapping({"/newcarpage"})
